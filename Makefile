@@ -23,10 +23,10 @@ LDLIBS += -latomic
 CXXFLAGS += -m32
 LDFLAGS += -m32
 
-APP_DIR := .
+SDL_GAME_DIR := .
 CPPFLAGS += -I ../include
 CPPFLAGS += -I ../../include
-CPPFLAGS += -I $(APP_DIR)
+CPPFLAGS += -I $(SDL_GAME_DIR)
 CPPFLAGS += -I /usr0/include
 
 
