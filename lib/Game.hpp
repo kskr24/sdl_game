@@ -1,6 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "TextureManager.hpp"
 #include <SDL2/SDL.h>
 #include <iostream>
 
@@ -23,9 +24,8 @@ private:
   SDL_Window *m_pWindow;
   SDL_Renderer *m_pRenderer;
 
-  SDL_Texture* m_pTexture;
-  SDL_Rect m_sourceRectangle;
-  SDL_Rect m_destinationRectangle;
+  int m_currentFrame;
+  TextureManager m_textureManager;
 };
 
 #endif

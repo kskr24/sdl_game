@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
 #include <SDL2/SDL_image.h>
-
+#include "lib/TextureManager.hpp"
 // TODO(kskr24) Use glog library for logging
 
 bool Game::init(const char *title, int xpos, int ypos, int width, int height,
@@ -18,17 +18,11 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height,
     if (m_pWindow != NULL) {
 
       m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
-      
+
       // check for loding
 
-      // SDL_QueryTexture(m_pTexture, NULL, NULL, &m_sourceRectangle.w,
-      //                  &m_sourceRectangle.h);
-      m_sourceRectangle.w = 128;
-      m_sourceRectangle.h = 82;
-      m_destinationRectangle.x = m_sourceRectangle.x = 0;
-      m_destinationRectangle.y = m_sourceRectangle.y = 0;
-      m_destinationRectangle.w = m_sourceRectangle.w;
-      m_destinationRectangle.h = m_sourceRectangle.h;
+      m_textureManager.load("assets/animate_alpha.png", "animate", m_pRenderer);
+
       if (m_pRenderer != NULL) {
         SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
       } else {
@@ -47,8 +41,9 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height,
 
 void Game::render() {
   SDL_RenderClear(m_pRenderer); // clear the render to draw color
-  SDL_RenderCopyEx(m_pRenderer, m_pTexture, &m_sourceRectangle,
-                   &m_destinationRectangle, 0, 0, SDL_FLIP_HORIZONTAL);
+  m_textureManager.draw("animate", 0, 0, 128, 82, m_pRenderer);
+  m_textureManager.drawFrame("animate", 100, 100, 128, 82, 1, m_currentFrame,
+                             m_pRenderer);
   SDL_RenderPresent(m_pRenderer); // draw to the screen
 }
 
@@ -73,6 +68,6 @@ void Game::handleEvents() {
   }
 }
 void Game::update() {
-  m_sourceRectangle.x = 128 * int(((SDL_GetTicks() / 100) % 6));
+  m_currentFrame = 128 * int(((SDL_GetTicks() / 100) % 6));
 }
 bool Game::running() { return m_bRunning; }

@@ -1,0 +1,111 @@
+#! /bin/bash
+
+PATH="/bin:/usr/bin:/usr/local/bin"
+
+PROGNAME=$(basename $0 .sh)
+CWD=$(pwd)
+
+need_to_stage_object_file=1
+
+prev_sleep=1
+current_sleep=1
+next_sleep=1
+ar_wrapper_dir=''
+
+output=$1
+shift
+
+usage() {
+  echo 1>&2
+  echo "Usage: ${PROGNAME} output_lib.a input_file1.o input_file2.o input_lib1.a input_lib2.a" 1>&2
+}
+
+cleanup() {
+  cd $CWD
+  if [ -n "${ar_wrapper_dir}" ]; then
+    rm -fr "${ar_wrapper_dir}"
+  fi
+}
+
+cleanup_and_exit() {
+  cleanup
+  exit ${1}
+}
+
+warn() {
+  echo 1>&2
+  echo "${PROGNAME} - WARN - While attemping to build ${output}: ${1:-"Unknown error"}" 1>&2
+}
+
+die() {
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
+  echo "!!                            ${PROGNAME} ERROR" 2>&2
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
+  echo "!!" 1>&2
+  echo "!! While attempting to build ${output}" 1>&2
+  echo "!!" 1>&2
+  echo "!! ${1:-"Unknown error"}" 1>&2
+  echo "!!" 1>&2
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
+  cleanup_and_exit 1
+}
+
+handle_staging_error() {
+  need_to_stage_object_file=1
+  cleanup
+  prev_sleep=${current_sleep}
+  current_sleep=$next_sleep
+  if [ ${current_sleep} -gt 377 ]; then
+    die "Failed to stage ${1} in ${ar_wrapper_dir} for ${output}"
+  fi
+  next_sleep=$((${prev_sleep} + ${current_sleep}))
+  warn "Failed to stage ${1} into ${ar_wrapper_dir}. Retrying in ${current_sleep} seconds"
+  sleep ${current_sleep}
+}
+
+trap cleanup_and_exit SIGHUP SIGINT SIGTERM
+
+contents_file="${output}.contents"
+
+while [ $need_to_stage_object_file -eq 1 ]; do
+  need_to_stage_object_file=0
+  ar_wrapper_dir=$(mktemp -t -d "${PROGNAME}.XXXXXXXXXX")
+  rm -f "${output}" "${contents_file}"
+
+  for arg in "$@"; do
+    if [[ ! -e "${CWD}/${arg}" ]]; then
+      echo "Hello"
+      die "File does not exist: ${arg}"
+    fi
+    echo "${arg}" >>"${contents_file}"
+    extension="${arg##*.}"
+    if [[ "${extension}" == "a" ]]; then
+      mkdir -p "${ar_wrapper_dir}/${arg}"
+      cd "${ar_wrapper_dir}/${arg}"
+      if ! ar x "${CWD}/${arg}"; then
+        handle_staging_error "${arg}"
+        break
+      fi
+      cd $CWD
+    else
+      if ! cp "${arg}" "${ar_wrapper_dir}/${arg//\//_}"; then
+        handle_staging_error "${arg}"
+        break
+      fi
+    fi
+  done
+done
+
+object_files=$(find -L "${ar_wrapper_dir}" -! -type d)
+
+if [[ -z "${object_files}" ]]; then
+  die "No object files identified"
+fi
+
+library_files=$(md5sum ${object_files} | sort | uniq --check-chars=16 | awk '{print $2}' | sort)
+echo $output
+echo $library_files
+ar rcs "${output}" ${library_files}
+
+cleanup_and_exit 0

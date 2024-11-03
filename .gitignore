@@ -2,3 +2,7 @@ compile_commands.json
 .cache/
 .clangd
 bin/
+*/*.contents
+lib/*.a
+lib/*.a
+src/*.o

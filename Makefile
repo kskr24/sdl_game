@@ -31,7 +31,7 @@ LDLIBS += -latomic
 # CXXFLAGS += -m32
 # LDFLAGS += -m32
 
-LDFLAGS += -Wl,-rpath=
+LDFLAGS += -Wl,-rpath=$(SDL_GAME_DIR)/lib
 
 
 MY_COMPILE.cpp = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) 
@@ -40,7 +40,10 @@ MY_OUTPUT_OPTION = -o $@
  
 %.o: %.cpp
 	$(MY_COMPILE.cpp) -c $(MY_OUTPUT_OPTION) $<
- 
+
+
+%.a: %.mk
+	./ar_wrapper $@ $(filter-out %.mk, $^)
 
 SRC_SRC := $(shell /usr/bin/find -L src -maxdepth 2 -name '*.cpp')
 EXE :=
