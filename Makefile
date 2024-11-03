@@ -19,7 +19,7 @@ CXXFLAGS += -Wall -Werror -Wno-attributes -O2 -fPIC
 
 SDL2_DIR := /usr/local/include/SDL2
 CPPFLAGS += -isystem $(SDL2_DIR)
-LDLIBS += -lSDL2
+LDLIBS += -lSDL2 -lSDL2_image
 
 # Shared files for WMS that are architecture specific
 
