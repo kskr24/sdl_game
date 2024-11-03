@@ -1,11 +1,13 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "lib/GameObject.hpp"
+#include "lib/Player.hpp"
+#include "lib/TextureManager.hpp"
+
 #include <SDL2/SDL.h>
 
 #include <iostream>
-
-#include "TextureManager.hpp"
 
 class Game {
  public:
@@ -30,6 +32,9 @@ class Game {
   SDL_Window   *m_pWindow;
   SDL_Renderer *m_pRenderer;
   int           m_currentFrame;
+
+  GameObject m_go;
+  Player     m_player;
 };
 
 #endif

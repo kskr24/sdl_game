@@ -1,18 +1,16 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include <SDL2/SDL.h>
+
 #include "GameObject.hpp"
 
 class Player : public GameObject {
  public:
-  void draw() { GameObject::draw(); }
-
-  void update() {
-    m_x = 0;
-    m_y = 0;
-  }
-
-  void clean() { GameObject::clean(); }
+  void load(int x, int y, int width, int height, std::string textureID);
+  void draw(SDL_Renderer* p_Renderer);
+  void update();
+  void clean();
 };
 
 #endif
