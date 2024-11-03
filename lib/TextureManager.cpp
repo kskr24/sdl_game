@@ -1,7 +1,17 @@
 #include "TextureManager.hpp"
+
 #include <SDL2/SDL_image.h>
 
-bool TextureManager::load(std::string fileName, std::string id,
+TextureManager *TextureManager::Instance() {
+  if(s_pInstance == 0){
+    s_pInstance = new TextureManager();
+    return s_pInstance;
+  }
+  return s_pInstance;
+}
+
+bool TextureManager::load(std::string   fileName,
+                          std::string   id,
                           SDL_Renderer *p_Renderer) {
   SDL_Surface *p_TempSurface = IMG_Load(fileName.c_str());
   if (p_TempSurface == NULL) {
@@ -20,8 +30,13 @@ bool TextureManager::load(std::string fileName, std::string id,
   return false;
 }
 
-void TextureManager::draw(std::string id, int x, int y, int width, int height,
-                          SDL_Renderer *p_Renderer, SDL_RendererFlip flip) {
+void TextureManager::draw(std::string      id,
+                          int              x,
+                          int              y,
+                          int              width,
+                          int              height,
+                          SDL_Renderer    *p_Renderer,
+                          SDL_RendererFlip flip) {
   SDL_Rect srcRect;
   SDL_Rect destRect;
 
@@ -33,13 +48,18 @@ void TextureManager::draw(std::string id, int x, int y, int width, int height,
   destRect.x = x;
   destRect.y = y;
 
-  SDL_RenderCopyEx(p_Renderer, m_textureMap[id], &srcRect, &destRect, 0, 0,
-                   flip);
+  SDL_RenderCopyEx(
+      p_Renderer, m_textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }
 
-void TextureManager::drawFrame(std::string id, int x, int y, int width,
-                               int height, int currentRow, int currentFrame,
-                               SDL_Renderer *p_Renderer,
+void TextureManager::drawFrame(std::string      id,
+                               int              x,
+                               int              y,
+                               int              width,
+                               int              height,
+                               int              currentRow,
+                               int              currentFrame,
+                               SDL_Renderer    *p_Renderer,
                                SDL_RendererFlip flip) {
   SDL_Rect srcRect;
   SDL_Rect destRect;
@@ -52,6 +72,8 @@ void TextureManager::drawFrame(std::string id, int x, int y, int width,
   destRect.x = x;
   destRect.y = y;
 
-  SDL_RenderCopyEx(p_Renderer, m_textureMap[id], &srcRect, &destRect, 0, 0,
-                   flip);
+  SDL_RenderCopyEx(
+      p_Renderer, m_textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }
+
+TextureManager *TextureManager::s_pInstance = 0;

@@ -73,6 +73,7 @@ clean:
 	@echo "Removing current executables..."
 	@rm -f --verbose -- $(EXE)
 	@find -L . -name "*.[oda]" -o -name "*.os" | xargs --verbose --no-run-if-empty rm -f --
+	@find -L . -name "*.contents"| xargs --verbose --no-run-if-empty rm -f --
 
 
 
