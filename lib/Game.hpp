@@ -33,8 +33,8 @@ class Game {
   SDL_Renderer *m_pRenderer;
   int           m_currentFrame;
 
-  GameObject m_go;
-  Player     m_player;
+  // GameObject m_go;
+  // Player     m_player;
 };
 
 #endif

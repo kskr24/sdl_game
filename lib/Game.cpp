@@ -29,10 +29,13 @@ bool Game::init(const char *title,
   }
 
   SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
-  if (TheTextureManager::Instance()->load(
+  if (!TheTextureManager::Instance()->load(
           "assets/animate_alpha.png", "animate", m_pRenderer)) {
     return false;
   }
+
+  // m_go.load(100, 100, 128, 82, "animate");
+  // m_player.load(300, 300, 128, 82, "animate");
 
   m_bRunning = true;
   return true;
@@ -43,6 +46,7 @@ void Game::render() {
   TextureManager::Instance()->draw("animate", 0, 0, 128, 82, m_pRenderer);
   TextureManager::Instance()->drawFrame(
       "animate", 100, 100, 128, 82, 1, m_currentFrame, m_pRenderer);
+
   SDL_RenderPresent(m_pRenderer);  // draw to the screen
 }
 
@@ -58,7 +62,7 @@ void Game::handleEvents() {
   if (SDL_PollEvent(&event)) {
     switch (event.type) {
       case SDL_QUIT: {
-        m_bRunning = false;
+        m_bRunning = true;
       } break;
 
       default:
