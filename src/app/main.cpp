@@ -1,7 +1,7 @@
 
 #include "lib/Game.hpp"
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 #include <memory>
 
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     g_ptr->update();
     g_ptr->render();
 
-    SDL_Delay(10);
+    // SDL_Delay(10);
   }
 
   return 0;

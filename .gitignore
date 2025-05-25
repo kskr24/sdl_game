@@ -5,3 +5,4 @@ bin/
 lib/*.a
 lib/*.o
 src/app/*.o
+.vscode

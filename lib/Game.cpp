@@ -2,7 +2,9 @@
 
 #include "lib/TextureManager.hpp"
 
-#include <SDL2/SDL_image.h>
+#include <SDL3/SDL_error.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3_image/SDL_image.h>
 
 typedef TextureManager TheTextureManager;
 // TODO(kskr24) Use glog library for logging
@@ -12,18 +14,19 @@ bool Game::init(const char *title,
                 int         width,
                 int         height,
                 int         fullscreen) {
-  if (SDL_Init(SDL_INIT_EVERYTHING) != 0) return false;
-
+  if (!SDL_Init(SDL_INIT_EVENTS)) {
+    return false;
+  }
   int flags = 0;
   if (fullscreen) {
-    flags = SDL_WINDOW_FULLSCREEN;
+    // flags = SDL_WINDOW_FULLSCREEN;
   }
-  m_pWindow = SDL_CreateWindow("Hello World", xpos, ypos, width, height, flags);
+  m_pWindow = SDL_CreateWindow("Hello World", width, height, flags);
   if (m_pWindow == NULL) {
     return false;
   }
 
-  m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
+  m_pRenderer = SDL_CreateRenderer(m_pWindow, NULL);
   if (m_pRenderer == NULL) {
     return false;
   }
@@ -51,7 +54,6 @@ void Game::render() {
 }
 
 void Game::clean() {
-  // std::cout << "cleaning game\n";
   SDL_DestroyWindow(m_pWindow);
   SDL_DestroyRenderer(m_pRenderer);
   SDL_Quit();
@@ -61,8 +63,8 @@ void Game::handleEvents() {
   SDL_Event event;
   if (SDL_PollEvent(&event)) {
     switch (event.type) {
-      case SDL_QUIT: {
-        m_bRunning = true;
+      case SDL_EVENT_QUIT: {
+        m_bRunning = false;
       } break;
 
       default:
@@ -71,4 +73,5 @@ void Game::handleEvents() {
   }
 }
 void Game::update() { m_currentFrame = int(((SDL_GetTicks() / 100) % 6)); }
+
 bool Game::running() { return m_bRunning; }

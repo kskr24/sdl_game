@@ -5,9 +5,8 @@
 #include "lib/Player.hpp"
 #include "lib/TextureManager.hpp"
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
-#include <iostream>
 
 class Game {
  public:

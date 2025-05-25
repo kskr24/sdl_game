@@ -3,7 +3,7 @@
 PWD=$(pwd)
 
 if [[ -z "$COMPILE_FLAGS" ]]; then
-    COMPILE_FLAGS="-I /home/shkumar/code/cpp/sdl_game/lib -isystem /usr/include/glog -isystem /usr/include/boost -isystem /usr/include/c++/11 -isystem /usr/include/x86_64-linux-gnu/c++/11 -isystem /usr/include/c++/11/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/11/include -isystem /usr/lib/gcc/x86_64-linux-gnu/11/include-fixed -isystem /usr/include/x86_64-linux-gnu -std=c++23"
+    COMPILE_FLAGS="-I /home/kskr24/dev/cpp/sdl_game -I /home/kskr24/dev/cpp/sdl_game/lib -isystem /usr/include/glog -isystem /usr/include/boost -isystem /usr/include/c++/11 -isystem /usr/include/x86_64-linux-gnu/c++/11 -isystem /usr/include/c++/11/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/11/include -isystem /usr/lib/gcc/x86_64-linux-gnu/11/include-fixed -isystem /usr/include/x86_64-linux-gnu -std=c++23"
 fi
 
 echo "["

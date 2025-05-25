@@ -7,7 +7,7 @@ SRC := $(shell /usr/bin/find -L . -path ./.git -prune -o -name '*.cpp' -print)
 HDR := $(shell /usr/bin/find -L . -path ./.git -prune -o -name '*.hpp' -print)
 
 # Initialize common variables
-SDL_GAME_DIR := /home/shkumar/code/cpp/sdl_game
+SDL_GAME_DIR := /home/kskr24/dev/cpp/sdl_game
 
 CPPFLAGS:=
 CPPFLAGS += -I $(SDL_GAME_DIR)/
@@ -17,9 +17,9 @@ CPPFLAGS += -I $(SDL_GAME_DIR)/lib
 CXXFLAGS:= -std=c++23
 CXXFLAGS += -Wall -Werror -Wno-attributes -O2 -fPIC
 
-SDL2_DIR := /usr/local/include/SDL2
-CPPFLAGS += -isystem $(SDL2_DIR)
-LDLIBS += -lSDL2 -lSDL2_image
+SDL3_DIR := /usr/local/include/SDL3
+CPPFLAGS += -isystem $(SDL3_DIR)
+LDLIBS += -lSDL3 -lSDL3_image
 
 # Shared files for WMS that are architecture specific
 

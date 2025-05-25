@@ -1,10 +1,11 @@
 #ifndef TEXTURE_MANAGER_HPP
 #define TEXTURE_MANAGER_HPP
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_surface.h>
 
-#include <iostream>
 #include <map>
+#include <string>
 class TextureManager {
  public:
   static TextureManager *Instance();
@@ -16,7 +17,7 @@ class TextureManager {
             int           width,
             int           height,
             SDL_Renderer *p_Renderer,
-            SDL_RendererFlip = SDL_FLIP_NONE);
+            SDL_FlipMode = SDL_FLIP_NONE);
 
   void drawFrame(std::string   id,
                  int           x,
@@ -26,10 +27,10 @@ class TextureManager {
                  int           currentRow,
                  int           currentFrame,
                  SDL_Renderer *p_Renderer,
-                 SDL_RendererFlip = SDL_FLIP_NONE);
+                 SDL_FlipMode = SDL_FLIP_NONE);
 
  private:
-  TextureManager(){};
+  TextureManager() {};
   std::map<std::string, SDL_Texture *> m_textureMap;
   static TextureManager               *s_pInstance;
 };
