@@ -40,17 +40,6 @@ void TextureManager::draw(std::string   id,
                           int           height,
                           SDL_Renderer *p_Renderer,
                           SDL_FlipMode  flip) {
-  // SDL_Rect srcRect;
-  // SDL_Rect destRect;
-
-  // srcRect.x = 0;
-  // srcRect.y = 0;
-  // srcRect.w = destRect.w = width;
-  // srcRect.h = destRect.h = height;
-
-  // destRect.x = x;
-  // destRect.y = y;
-
   SDL_RenderTextureRotated(
       p_Renderer, m_textureMap[id], NULL, NULL, 0, 0, flip);
 }
@@ -64,17 +53,6 @@ void TextureManager::drawFrame(std::string   id,
                                int           currentFrame,
                                SDL_Renderer *p_Renderer,
                                SDL_FlipMode  flip) {
-  // SDL_Rect srcRect;
-  // SDL_Rect destRect;
-
-  // srcRect.x = width * currentFrame;
-  // srcRect.y = height * (currentRow - 1);
-  // srcRect.w = destRect.w = width;
-  // srcRect.h = destRect.h = height;
-
-  // destRect.x = x;
-  // destRect.y = y;
-
   SDL_RenderTextureRotated(
       p_Renderer, m_textureMap[id], NULL, NULL, 0, 0, flip);
 }
